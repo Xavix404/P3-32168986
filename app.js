@@ -57,8 +57,8 @@ app.use(express.static(join(__dirname, "public")));
 // Monta los routers importados. Aquí ambas rutas se montan en '/' por lo
 // que manejan subrutas definidas dentro de cada router.
 app.use("/", indexRouter);
-app.use("/", usersRouter);
+app.use("/users", usersRouter);
 
-// Nota: no hay `export default app;` en este archivo tras los cambios porque
-// quizá el servidor se arranque en otro archivo; si necesitas exportarlo,
-// puedes descomentar la línea de export.
+app.listen(PORT, () => {
+  console.log(`server listening on port: http://localhost:${PORT}`);
+});
