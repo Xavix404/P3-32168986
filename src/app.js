@@ -21,7 +21,6 @@ import logger from "morgan";
 // Importa los routers definidos en la carpeta `routes` para organizar
 // los endpoints de la aplicación (modularización de rutas).
 import indexRouter from "./routes/index.js";
-import usersRouter from "./routes/users.js";
 
 // Obtener __filename y __dirname en entorno ESM:
 // import.meta.url contiene la URL del módulo actual; la convertimos a
@@ -35,6 +34,7 @@ const PORT = 3000;
 
 // Crea la instancia de la aplicación Express.
 var app = express();
+app.disable("x-powered-by");
 
 // Logger: registra peticiones HTTP en la consola en formato 'dev'.
 app.use(logger("dev"));
@@ -51,13 +51,14 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Middleware para servir archivos estáticos desde la carpeta `public`.
-// Ej.: /stylesheets/style.css -> ${__dirname}/public/stylesheets/style.css
-app.use(express.static(join(__dirname, "public")));
+// Ejemplo: /stylesheets/style.css -> ${__dirname}/public/stylesheets/style.css
+// NOTA: Se desactiva el envío automático de `index.html` en la raíz.
+// Así, la respuesta a `/` la maneja el router (indexRouter) y no el archivo estático.
+app.use(express.static(join(__dirname, "../public")));
 
-// Monta los routers importados. Aquí ambas rutas se montan en '/' por lo
-// que manejan subrutas definidas dentro de cada router.
+// Monta los routers importados.
+// La ruta `/` ahora es manejada por indexRouter (ver routes/index.js).
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 
 app.listen(PORT, () => {
   console.log(`server listening on port: http://localhost:${PORT}`);
