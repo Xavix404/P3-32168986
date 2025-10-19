@@ -13,14 +13,10 @@ import { fileURLToPath } from "url";
 
 // Middleware para parsear cookies en las peticiones HTTP.
 import cookieParser from "cookie-parser";
-
-// Morgan es un logger HTTP; ayuda a ver en consola las peticiones entrantes
-// (método, ruta, tiempo, código de respuesta, etc.).
 import logger from "morgan";
-
-// Importa los routers definidos en la carpeta `routes` para organizar
-// los endpoints de la aplicación (modularización de rutas).
 import indexRouter from "./routes/index.js";
+import swaggerUI from "swagger-ui-express";
+import specs from "../swagger/swagger.js";
 
 // Obtener __filename y __dirname en entorno ESM:
 // import.meta.url contiene la URL del módulo actual; la convertimos a
@@ -28,19 +24,13 @@ import indexRouter from "./routes/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Puerto por defecto (no usado en este archivo directamente, pero útil
-// para referencia o al arrancar el servidor desde otro módulo).
 const PORT = 3000;
 
-// Crea la instancia de la aplicación Express.
 var app = express();
 app.disable("x-powered-by");
 
-// Logger: registra peticiones HTTP en la consola en formato 'dev'.
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use(logger("dev"));
-
-// Middleware que parsea JSON en el body de las peticiones y pone el
-// resultado en `req.body` (para Content-Type: application/json).
 app.use(json());
 
 // Middleware que parsea bodies en formato URL-encoded (formularios HTML).
@@ -52,14 +42,8 @@ app.use(cookieParser());
 
 // Middleware para servir archivos estáticos desde la carpeta `public`.
 // Ejemplo: /stylesheets/style.css -> ${__dirname}/public/stylesheets/style.css
-// NOTA: Se desactiva el envío automático de `index.html` en la raíz.
-// Así, la respuesta a `/` la maneja el router (indexRouter) y no el archivo estático.
 app.use(express.static(join(__dirname, "../public")));
 
-// Monta los routers importados.
-// La ruta `/` ahora es manejada por indexRouter (ver routes/index.js).
 app.use("/", indexRouter);
 
-app.listen(PORT, () => {
-  console.log(`server listening on port: http://localhost:${PORT}`);
-});
+export default app;
