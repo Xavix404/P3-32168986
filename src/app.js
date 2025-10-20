@@ -17,7 +17,8 @@ import logger from "morgan";
 import swaggerUI from "swagger-ui-express";
 import specs from "../swagger/swagger.js";
 
-import indexRouter from "./routes/index.js";
+import indexRouter from "./routes/about.js";
+import pingRouter from "./routes/ping.js";
 
 import "dotenv/config";
 
@@ -46,5 +47,6 @@ app.use(cookieParser());
 app.use(express.static(join(__dirname, "../public")));
 
 app.use("/", indexRouter);
+app.use("/", pingRouter);
 
 export default app;
