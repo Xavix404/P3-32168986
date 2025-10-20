@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { getPing } from "../controllers/pingController.js";
 
 var router = Router();
 
@@ -23,8 +24,6 @@ var router = Router();
  *               example: ""
  */
 
-router.get("/", (_req, res) => {
-  res.status(200), res.send("");
-});
+router.get("/", getPing);
 
 export default router;

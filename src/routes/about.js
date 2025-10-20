@@ -1,5 +1,5 @@
 import { Router } from "express";
-import aboutData from "../services/about.json" with { type: "json" };
+import { getAbout } from "../controllers/aboutController.js";
 
 var router = Router();
 
@@ -52,8 +52,6 @@ var router = Router();
  *                   example: Error al leer los datos
  */
 
-router.get("/", (_req, res) => {
-  res.json(aboutData);
-});
+router.get("/", getAbout);
 
 export default router;
