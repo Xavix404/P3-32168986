@@ -31,7 +31,6 @@ const __dirname = dirname(__filename);
 var app = express();
 app.disable("x-powered-by");
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use(logger("dev"));
 app.use(json());
 
@@ -42,6 +41,7 @@ app.use(urlencoded({ extended: false }));
 // Middleware para parsear cookies y añadir `req.cookies`.
 app.use(cookieParser());
 
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 // Middleware para servir archivos estáticos desde la carpeta `public`.
 // Ejemplo: /stylesheets/style.css -> ${__dirname}/public/stylesheets/style.css
 app.use(express.static(join(__dirname, "../public")));
