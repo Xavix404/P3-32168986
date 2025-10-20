@@ -23,7 +23,7 @@ var router = Router();
  *               example: ""
  */
 
-router.get("/ping", (_req, res) => {
+router.get("/", (_req, res) => {
   res.status(200), res.send("");
 });
 

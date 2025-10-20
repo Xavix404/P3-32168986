@@ -46,7 +46,7 @@ app.use(cookieParser());
 // Ejemplo: /stylesheets/style.css -> ${__dirname}/public/stylesheets/style.css
 app.use(express.static(join(__dirname, "../public")));
 
-app.use("/", indexRouter);
-app.use("/", pingRouter);
+app.use("/about", indexRouter);
+app.use("/ping", pingRouter);
 
 export default app;

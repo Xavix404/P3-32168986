@@ -52,7 +52,7 @@ var router = Router();
  *                   example: Error al leer los datos
  */
 
-router.get("/about", (_req, res) => {
+router.get("/", (_req, res) => {
   res.json(aboutData);
 });
 
