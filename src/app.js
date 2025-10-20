@@ -14,17 +14,18 @@ import { fileURLToPath } from "url";
 // Middleware para parsear cookies en las peticiones HTTP.
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import indexRouter from "./routes/index.js";
 import swaggerUI from "swagger-ui-express";
 import specs from "../swagger/swagger.js";
+
+import indexRouter from "./routes/index.js";
+
+import "dotenv/config";
 
 // Obtener __filename y __dirname en entorno ESM:
 // import.meta.url contiene la URL del módulo actual; la convertimos a
 // ruta de archivo y luego extraemos el directorio.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const PORT = 3000;
 
 var app = express();
 app.disable("x-powered-by");
