@@ -1,4 +1,25 @@
-GET http://localhost:3000/about
+GET http://localhost:3000/user
 
 ###
-GET http://localhost:3000/ping
+GET http://localhost:3000/user/1
+
+###
+POST http://localhost:3000/user
+Content-Type: application/json
+
+{
+  "email": "si@gmail.com",
+  "name": "pta",
+  "password": "123456"
+}
+
+###
+PUT http://localhost:3000/user/1
+Content-Type: application/json
+
+{
+  "name": "coppycat"
+}
+
+###
+DELETE http://localhost:3000/user/2

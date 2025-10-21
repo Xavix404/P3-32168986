@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getAbout } from "../controllers/aboutController.js";
 
-var router = Router();
+const router = Router();
 
 /**
  * @openapi
