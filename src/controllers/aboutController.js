@@ -1,9 +1,17 @@
-import aboutData from "../services/about.json" with { type: "json" };
-
 export async function getAbout(req, res) {
   try {
-    res.json(aboutData)
-  }catch (err) {
-    console.log(err)
+    res.status(200).json({
+      status: "success",
+      data: {
+        nombreCompleto: "Victor Xavier Misel Marquez",
+        cedula: "32.168.986",
+        seccion: "2",
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
   }
 }

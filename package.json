@@ -9,18 +9,20 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
+    "@prisma/client": "6.17.1",
     "cookie-parser": "1.4.7",
     "debug": "2.6.9",
     "dotenv": "17.2.3",
     "express": "4.21.2",
     "morgan": "1.10.1",
-    "swagger-jsdoc": "6.2.8",
+    "swagger-jsdoc": "3.7.0",
     "swagger-ui-express": "5.0.1"
   },
   "devDependencies": {
     "cross-env": "10.1.0",
     "jest": "30.2.0",
     "nodemon": "3.1.10",
+    "prisma": "6.17.1",
     "supertest": "7.1.4"
   }
 }

@@ -6,8 +6,8 @@ import logger from "morgan";
 import swaggerUI from "swagger-ui-express";
 import specs from "./swagger/swagger.js";
 
-import indexRouter from "./routes/about.js";
-import pingRouter from "./routes/ping.js";
+import indexRouter from "./routes/about.routes.js";
+import pingRouter from "./routes/ping.routes.js";
 
 import "dotenv/config";
 
