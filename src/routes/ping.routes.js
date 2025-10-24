@@ -4,7 +4,7 @@ import { getPing } from "../controllers/pingController.js";
 const router = Router();
 
 /**
- * @openapi
+ * @swagger
  * /ping:
  *   get:
  *     summary: Endpoint de salud (health check)

@@ -1,20 +1,21 @@
-GET http://localhost:3000/user
+GET http://localhost:3000/users
 
 ###
-GET http://localhost:3000/user/1
+GET http://localhost:3000/users/1
 
 ###
-POST http://localhost:3000/user
+POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "si@gmail.com",
-  "name": "pta",
-  "password": "123456"
+  "email": "puto@gmail.com",
+  "username": "mamahuevo",
+  "password": "123456",
+  "rol": "user"
 }
 
 ###
-PUT http://localhost:3000/user/1
+PUT http://localhost:3000/users/1
 Content-Type: application/json
 
 {
@@ -22,4 +23,23 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/user/2
+DELETE http://localhost:3000/users/2
+
+###
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "azulcomoelmarazul@gmail.com",
+  "username": "WTFunPERUANO",
+  "password": "123456"
+}
+
+###
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "Antoño",
+  "password": "thiago"
+}

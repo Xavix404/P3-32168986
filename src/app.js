@@ -9,6 +9,7 @@ import specs from "./swagger/swagger.js";
 import indexRouter from "./routes/about.routes.js";
 import pingRouter from "./routes/ping.routes.js";
 import userRouter from "./routes/users.routes.js";
+import authRouter from "./routes/auth.routes.js";
 
 import "dotenv/config";
 
@@ -27,7 +28,8 @@ app.use(express.static(join(__dirname, "../public")));
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use("/about", indexRouter);
 app.use("/ping", pingRouter);
-app.use("/user", userRouter);
+app.use("/users", userRouter);
+app.use("/auth", authRouter);
 
 import errorHandler from "./middleware/errorHandler.js";
 app.use(errorHandler);

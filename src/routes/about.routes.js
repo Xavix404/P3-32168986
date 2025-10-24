@@ -4,7 +4,7 @@ import { getAbout } from "../controllers/aboutController.js";
 const router = Router();
 
 /**
- * @openapi
+ * @swagger
  * /about:
  *   get:
  *     summary: Devuelve información pública del autor del proyecto

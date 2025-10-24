@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { validationResult } from "express-validator";
 
 const prisma = new PrismaClient();
 
-export async function getUsers(_req, res) {
+export async function getUsers(req, res) {
   const user = await prisma.user.findMany();
-  res.json(user);
+  res.status(200).json(user);
 }
 
 export async function getUserById(req, res) {
@@ -14,26 +15,37 @@ export async function getUserById(req, res) {
       id: parseInt(req.params.id),
     },
   });
-  res.json(userFound);
+  res.status(200).json(userFound);
 }
 
 export async function createUser(req, res) {
-  req.body.password = await bcrypt.hash(req.body.password.toString(), 10);
+  const errors = validationResult(req);
 
-  const createdUser = await prisma.user.create({
-    data: req.body,
-  });
-  res.json(createdUser);
+  if (!errors.isEmpty()) {
+    res.status(422).json({ errors: errors.array() });
+  } else {
+    req.body.password = await bcrypt.hash(req.body.password.toString(), 10);
+
+    const createdUser = await prisma.user.create({
+      data: req.body,
+    });
+    res.status(200).json(createdUser);
+  }
 }
 
 export async function updateUser(req, res) {
-  const userChanged = await prisma.user.update({
-    where: {
-      id: parseInt(req.params.id),
-    },
-    data: req.body,
-  });
-  res.json(userChanged);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(422).json({ errors: errors.array() });
+  } else {
+    const userChanged = await prisma.user.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: req.body,
+    });
+    res.status(200).json(userChanged);
+  }
 }
 
 export async function deleteUser(req, res) {
@@ -42,5 +54,5 @@ export async function deleteUser(req, res) {
       id: parseInt(req.params.id),
     },
   });
-  res.json(userDeleted);
+  res.status(200).json(userDeleted);
 }
