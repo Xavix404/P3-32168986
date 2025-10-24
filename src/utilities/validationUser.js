@@ -96,6 +96,7 @@ export const registerUserRules = [
 
 export const changeUserRules = [
   check("email")
+    .optional()
     .isEmail()
     .withMessage("Invalid email")
     .custom(async (value) => {
@@ -110,8 +111,7 @@ export const changeUserRules = [
       return true;
     }),
   check("username")
-    .notEmpty()
-    .withMessage("Username cannot be empty")
+    .optional()
     .custom(async (value) => {
       const userFound = await prisma.user.findFirst({
         where: {
@@ -124,11 +124,11 @@ export const changeUserRules = [
       return true;
     }),
   check("password")
+    .optional()
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters"),
   check("rol")
-    .notEmpty()
-    .withMessage("rol cannot be empty")
+    .optional()
     .custom((value) => {
       if (value !== "user" && value !== "admin") {
         throw new Error("Invalid role");

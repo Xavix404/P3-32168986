@@ -49,6 +49,7 @@ export async function updateUser(req, res) {
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
+    req.body.password = await bcrypt.hash(req.body.password.toString(), 10);
     const userChanged = await prisma.user.update({
       where: {
         id: parseInt(req.params.id),
