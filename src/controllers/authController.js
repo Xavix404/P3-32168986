@@ -33,11 +33,15 @@ export async function login(req, res) {
       },
     });
     if (!user) {
-      return res.status(400).send("user doesn't exist");
+      return res
+        .status(400)
+        .json({ status: "error", message: "user doesn't exist" });
     }
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      return res.status(400).send("invalid password");
+      return res
+        .status(400)
+        .json({ status: "error", message: "wrong password" });
     }
     const token = jwt.sign(
       { username: user.username, id: user.id, rol: user.rol },
@@ -49,7 +53,7 @@ export async function login(req, res) {
       .cookie("access_token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "strict",
       })
       .send({ username });
   } catch (error) {
