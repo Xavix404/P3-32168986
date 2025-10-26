@@ -16,7 +16,6 @@ const options = {
           description: "Local server",
         },
       ],
-      components: undefined,
     },
     components: {
       schemas: {
@@ -31,9 +30,9 @@ const options = {
         },
         LoginDTO: {
           type: "object",
-          required: ["email", "password"],
+          required: ["username", "password"],
           properties: {
-            email: { type: "string", format: "email" },
+            username: { type: "string" },
             password: { type: "string" },
           },
         },
@@ -43,6 +42,8 @@ const options = {
             id: { type: "integer" },
             username: { type: "string" },
             email: { type: "string", format: "email" },
+            rol: { type: "string" },
+            password: { type: "string" },
           },
         },
         UserCreate: {
@@ -55,29 +56,22 @@ const options = {
             rol: { type: "string" },
           },
         },
-        JSendFail: {
+        UserUpdate: {
           type: "object",
+          required: ["username", "email", "password", "rol"],
           properties: {
-            status: { type: "string", example: "fail" },
-            message: { type: "string" },
-          },
-        },
-        JSendSuccess: {
-          type: "object",
-          properties: {
-            status: { type: "string", example: "success" },
-            data: {
-              type: ["object", "array"],
-              description: "Response payload",
-            },
+            username: { type: "string" },
+            email: { type: "string", format: "email" },
+            password: { type: "string" },
+            rol: { type: "string" },
           },
         },
       },
       securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
+        cookieAuth: {
+          type: "apiKey",
+          in: "cookie",
+          name: "access_token",
         },
       },
     },

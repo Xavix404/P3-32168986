@@ -25,7 +25,13 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "../public")));
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use(
+  "/api-docs",
+  swaggerUI.serve,
+  swaggerUI.setup(specs, null, {
+    swaggerOptions: { requestCredentials: "include" },
+  })
+);
 app.use("/about", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/users", userRouter);

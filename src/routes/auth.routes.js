@@ -46,9 +46,16 @@ router.post("/register", registerUserRules, register);
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/LoginDTO'
+ *     security: []
  *     responses:
  *       '200':
  *         description: Login successful (sets access_token cookie)
+ *         headers:
+ *          Set-Cookie:
+ *            description: JWT access token cookie
+ *            schema:
+ *            type: string
+ *            example: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly;
  *         content:
  *           application/json:
  *             schema:
@@ -57,11 +64,19 @@ router.post("/register", registerUserRules, register);
  *                 username:
  *                   type: string
  *       '400':
- *         description: Invalid credentials
- *         content:
+ *          description: Invalid credentials
+ *          content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/JSendFail'
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: "error"
+ *               message: "user doesn't exist or wrong password"
  */
 router.post("/login", login);
 

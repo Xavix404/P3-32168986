@@ -18,38 +18,48 @@ router.use(validateAuthorization);
 
 /**
  * @swagger
- * /user:
+ * /users:
  *   get:
  *     summary: Get list of users (protected)
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       '200':
- *         description: JSend success with array of users
+ *         description: Array of users
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/JSendSuccess'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
  *       '401':
  *         description: Unauthorized
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/JSendFail'
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: "fail"
+ *               message: "Access not authorized"
  */
 router.get("/", getUsers);
 
 /**
  * @swagger
- * /user/{id}:
+ * /users/{id}:
  *   get:
  *     summary: Get a user by id (protected)
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -58,25 +68,37 @@ router.get("/", getUsers);
  *           type: integer
  *     responses:
  *       '200':
- *         description: JSend success with a user
+ *         description: User object
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/JSendSuccess'
+ *               $ref: '#/components/schemas/User'
  *       '401':
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: "fail"
+ *               message: "Access not authorized"
  */
 router.get("/:id", getUserById);
 
 /**
  * @swagger
- * /user:
+ * /users:
  *   post:
  *     summary: Create a new user (protected)
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -85,25 +107,37 @@ router.get("/:id", getUserById);
  *             $ref: '#/components/schemas/UserCreate'
  *     responses:
  *       '201':
- *         description: User created (JSend)
+ *         description: Created user
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/JSendSuccess'
+ *               $ref: '#/components/schemas/User'
  *       '401':
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: "fail"
+ *               message: "Access not authorized"
  */
 router.post("/", createUserRules, createUser);
 
 /**
  * @swagger
- * /user/{id}:
+ * /users/{id}:
  *   put:
  *     summary: Update a user (protected)
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -115,28 +149,40 @@ router.post("/", createUserRules, createUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserCreate'
+ *             $ref: '#/components/schemas/UserUpdate'
  *     responses:
  *       '200':
- *         description: User updated (JSend)
+ *         description: Updated user
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/JSendSuccess'
+ *               $ref: '#/components/schemas/User'
  *       '401':
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: "fail"
+ *               message: "Access not authorized"
  */
 router.put("/:id", changeUserRules, updateUser);
 
 /**
  * @swagger
- * /user/{id}:
+ * /users/{id}:
  *   delete:
  *     summary: Delete a user (protected)
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -145,13 +191,33 @@ router.put("/:id", changeUserRules, updateUser);
  *           type: integer
  *     responses:
  *       '200':
- *         description: User deleted (JSend)
+ *         description: User deleted
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/JSendSuccess'
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: "success"
+ *               message: "User deleted"
  *       '401':
  *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: "fail"
+ *               message: "Access not authorized"
  */
 router.delete("/:id", deleteUser);
 
