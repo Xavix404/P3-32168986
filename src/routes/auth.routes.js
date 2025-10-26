@@ -54,8 +54,8 @@ router.post("/register", registerUserRules, register);
  *          Set-Cookie:
  *            description: JWT access token cookie
  *            schema:
- *            type: string
- *            example: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly;
+ *              type: string
+ *              example: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly;
  *         content:
  *           application/json:
  *             schema:
