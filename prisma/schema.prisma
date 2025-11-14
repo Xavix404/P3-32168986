@@ -17,3 +17,15 @@ model User {
   password String
   rol String
 }
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String 
+  //category
+  rarity String @unique
+  effects String
+  element String
+  price Int 
+  disponibility Int
+}
