@@ -10,6 +10,7 @@ import indexRouter from "./routes/about.routes.js";
 import pingRouter from "./routes/ping.routes.js";
 import userRouter from "./routes/users.routes.js";
 import authRouter from "./routes/auth.routes.js";
+import categoryRouter from "./routes/categories.routes.js";
 
 import "dotenv/config";
 
@@ -36,6 +37,7 @@ app.use("/about", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/categories", categoryRouter);
 
 import errorHandler from "./middleware/errorHandler.js";
 app.use(errorHandler);

@@ -49,7 +49,7 @@ export async function login(req, res) {
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       })
-      .send({ username });
+      .send({ token });
   } catch (error) {
     res.status(400).json({ errors: error.message });
   }

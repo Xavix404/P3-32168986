@@ -43,3 +43,30 @@ Content-Type: application/json
   "username": "Antoño",
   "password": "thiago"
 }
+
+###
+GET http://localhost:3000/categories
+
+###
+GET http://localhost:3000/categories/2
+
+###
+POST  http://localhost:3000/categories
+Content-Type: application/json
+
+{
+  "name": "weapons",
+  "description": "amazing weapons to fight monsters"
+}
+
+###
+PUT http://localhost:3000/categories/2
+Content-Type: application/json
+
+{
+  "name": "armors",
+  "description": "strong armors to protect strong heroes!"
+}
+
+###
+DELETE http://localhost:3000/categories/1
