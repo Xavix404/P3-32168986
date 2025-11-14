@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import AuthRepository from "../repository/authRepository.js";
 
-const prisma = new PrismaClient();
+const authRepo = new AuthRepository();
 
 export async function register(req, res) {
   const errors = validationResult(req);
@@ -14,9 +14,7 @@ export async function register(req, res) {
     req.body.password = await bcrypt.hash(req.body.password.toString(), 10);
     req.body.rol = "user";
 
-    const createdUser = await prisma.user.create({
-      data: req.body,
-    });
+    const createdUser = await authRepo.register(req, res);
     res.status(200).json(createdUser);
   } catch (error) {
     res.status(500).json({ error: "Error creating user" });
@@ -27,11 +25,7 @@ export async function login(req, res) {
   const { username, password } = req.body;
 
   try {
-    const user = await prisma.user.findFirst({
-      where: {
-        username: username,
-      },
-    });
+    const user = await authRepo.login(req, res);
     if (!user) {
       return res
         .status(400)
@@ -57,6 +51,6 @@ export async function login(req, res) {
       })
       .send({ username });
   } catch (error) {
-    res.status(400).json({ errors: error });
+    res.status(400).json({ errors: error.message });
   }
 }

@@ -4,9 +4,9 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "dinoAPI",
+      title: "DinoAPI",
       version: "1.0.0",
-      description: "API restful :D",
+      description: "API que hace cosas :D",
       contact: {
         name: "Xavix",
       },

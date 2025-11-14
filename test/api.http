@@ -8,30 +8,30 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "puto@gmail.com",
-  "username": "mamahuevo",
+  "email": "coppycat@example.com",
+  "username": "CoppyCat",
   "password": "123456",
   "rol": "user"
 }
 
 ###
-PUT http://localhost:3000/users/2
+PUT http://localhost:3000/users/1
 Content-Type: application/json
 
 {
-  "username": "CoppyCat"
+  "username": "Juan"
 }
 
 ###
-DELETE http://localhost:3000/users/2
+DELETE http://localhost:3000/users/19
 
 ###
 POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-  "email": "azulcomoelmarazul@gmail.com",
-  "username": "WTFunPERUANO",
+  "email": "achupika@gmail.com",
+  "username": "chukapi",
   "password": "123456"
 }
 
