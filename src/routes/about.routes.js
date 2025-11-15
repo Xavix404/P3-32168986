@@ -14,6 +14,7 @@ const router = Router();
  *       número de cédula y sección) que pueden consumir clientes o tests.
  *     tags:
  *       - Información
+ *     security: []
  *     responses:
  *       200:
  *         description: Respuesta exitosa con los datos del autor.

@@ -11,6 +11,7 @@ const router = Router();
  *     summary: Register a new user
  *     tags:
  *       - Auth
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:

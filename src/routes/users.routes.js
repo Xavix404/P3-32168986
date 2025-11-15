@@ -24,7 +24,7 @@ router.use(validateAuthorization);
  *     tags:
  *       - Users
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       '200':
  *         description: Array of users
@@ -50,7 +50,6 @@ router.use(validateAuthorization);
  *               message: "Access not authorized"
  */
 router.get("/", getUsers);
-
 /**
  * @swagger
  * /users/{id}:
@@ -59,7 +58,7 @@ router.get("/", getUsers);
  *     tags:
  *       - Users
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -98,7 +97,7 @@ router.get("/:id", getUserById);
  *     tags:
  *       - Users
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -137,7 +136,7 @@ router.post("/", createUserRules, createUser);
  *     tags:
  *       - Users
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -182,7 +181,7 @@ router.put("/:id", changeUserRules, updateUser);
  *     tags:
  *       - Users
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

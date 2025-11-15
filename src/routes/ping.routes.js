@@ -14,6 +14,7 @@ const router = Router();
  *       banda y el tiempo de respuesta. Útil en probes de Kubernetes o tests.
  *     tags:
  *       - Salud
+ *     security: []
  *     responses:
  *       200:
  *         description: Servicio activo.

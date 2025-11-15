@@ -40,7 +40,7 @@ describe("Auth integration tests", () => {
   test("login with correct credentials should return 200 and set cookie", async () => {
     const res = await agent
       .post("/auth/login")
-      .send({ username: "Antoño", password: "thiago" });
+      .send({ username: "CoppyCat", password: "123456" });
     expect(res.statusCode).toBe(200);
     expect(res.headers["set-cookie"]).toBeDefined();
   });
