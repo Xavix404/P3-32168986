@@ -11,7 +11,7 @@ Content-Type: application/json
   "email": "coppycat@example.com",
   "username": "CoppyCat",
   "password": "123456",
-  "rol": "user"
+  "rol": "admin"
 }
 
 ###
@@ -40,8 +40,8 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "username": "Antoño",
-  "password": "thiago"
+  "username": "CoppyCat",
+  "password": "123456"
 }
 
 ###
@@ -70,3 +70,99 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/categories/1
+
+###
+GET http://localhost:3000/tags
+
+###
+GET http://localhost:3000/tags/1
+
+###
+POST  http://localhost:3000/tags
+Content-Type: application/json
+
+{
+  "name": "heavy"
+}
+
+###
+PUT http://localhost:3000/tags/1
+Content-Type: application/json
+
+{
+  "name": "light"
+}
+
+###
+DELETE http://localhost:3000/tags/1
+
+###
+GET http://localhost:3000/rarity
+
+###
+GET http://localhost:3000/rarity/1
+
+###
+POST  http://localhost:3000/rarity
+Content-Type: application/json
+
+{
+  "name": "uncommon"
+}
+
+###
+PUT http://localhost:3000/rarity/1
+Content-Type: application/json
+
+{
+  "name": "common"
+}
+
+###
+DELETE http://localhost:3000/rarity/1
+
+###
+GET http://localhost:3000/products?element=Fire
+
+###
+GET http://localhost:3000/products/1
+
+###
+GET http://localhost:3000/products/1-dark-sword
+
+###
+POST  http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "Dark-Sword",
+  "description": "Powerfull sword born of dark magic",
+  "categoryId": 2,
+  "tagIds": [
+    2,
+    5,
+    6,
+    7,
+    9,
+    24,
+    28
+  ],
+  "rarityId": 4,
+  "effects": "dark magic",
+  "element": "dark",
+  "price": 1000,
+  "disponibility": 1
+}
+
+###
+PUT http://localhost:3000/products/1
+Content-Type: application/json
+
+{
+  "tagIds": [
+    3
+  ]
+}
+
+###
+DELETE http://localhost:3000/products/1

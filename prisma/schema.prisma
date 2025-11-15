@@ -26,7 +26,7 @@ model Product {
   category Category @relation(fields: [categoryId], references: [id])
   categoryId Int 
   productsTag ProductTags[]
-  rarity Rarity @relation(fields: [rarityId], references: [id])
+  rarity Rarity @relation(fields: [rarityId], references: [id])//i'm not a bronny by the way, i also whached my little ponny by the way
   rarityId Int
   effects String
   element String

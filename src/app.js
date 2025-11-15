@@ -11,6 +11,9 @@ import pingRouter from "./routes/ping.routes.js";
 import userRouter from "./routes/users.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import categoryRouter from "./routes/categories.routes.js";
+import tagsRouter from "./routes/tags.routes.js";
+import rarityRouter from "./routes/rarity.routes.js";
+import productRouter from "./routes/product.routes.js";
 
 import "dotenv/config";
 
@@ -38,6 +41,9 @@ app.use("/ping", pingRouter);
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/categories", categoryRouter);
+app.use("/tags", tagsRouter);
+app.use("/rarity", rarityRouter);
+app.use("/products", productRouter);
 
 import errorHandler from "./middleware/errorHandler.js";
 app.use(errorHandler);

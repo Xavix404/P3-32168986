@@ -49,7 +49,7 @@ export async function updateUser(req, res) {
     const userChanged = await userRepo.updateUser(req, res);
     res.status(200).json(userChanged);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Error updating user" });
   }
 }
 

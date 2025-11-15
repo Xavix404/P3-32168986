@@ -34,7 +34,7 @@ export async function updateCategory(req, res) {
     const categoryChanged = await categoryRepo.updateCategory(req, res);
     res.status(200).json(categoryChanged);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Error updating category" });
   }
 }
 
