@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import swaggerUI from "swagger-ui-express";
 import specs from "./swagger/swagger.js";
+import cors from "cors";
 
 import indexRouter from "./routes/about.routes.js";
 import pingRouter from "./routes/ping.routes.js";
@@ -23,6 +24,7 @@ const __dirname = dirname(__filename);
 const app = express();
 app.disable("x-powered-by");
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
