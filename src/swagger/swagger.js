@@ -11,7 +11,16 @@ const options = {
         name: "Xavix",
       },
     },
+    // Server URL is configurable so the OpenAPI spec works both locally
+    // and in production (Render). If `SWAGGER_BASE_URL` is not provided,
+    // use a relative root (`/`) so Swagger UI calls the same origin that
+    // serves the docs instead of trying to reach `localhost:3000` from
+    // the user's browser.
     servers: [
+      {
+        url: "https://p3-32168986.onrender.com",
+        description: "API server",
+      },
       {
         url: "http://localhost:3000",
         description: "Local server",
