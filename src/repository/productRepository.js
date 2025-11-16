@@ -2,10 +2,26 @@ import prisma from "../../prisma/prisma.js";
 
 export default class ProductRepository {
   constructor() {
-    this.model = prisma.product;
+    // Defensive: ensure Prisma client and model exist. On some deploys the
+    // generated client may be missing if `prisma generate` wasn't run.
+    if (!prisma || !prisma.product) {
+      // Keep a clear error for runtime logs to help debugging deploy issues
+      // (missing generated client or wrong Prisma schema on the host).
+      console.error(
+        "Prisma client or `product` model is not available. Did you run `prisma generate` on the deploy host?"
+      );
+      this.model = undefined;
+    } else {
+      this.model = prisma.product;
+    }
   }
 
   async findProducts(options = {}) {
+    if (!this.model) {
+      throw new Error(
+        "Prisma model `product` is not available. Check server logs and ensure Prisma Client is generated (prisma generate) and the correct DATABASE_URL is set."
+      );
+    }
     const {
       page,
       rarity,
