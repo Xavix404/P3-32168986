@@ -24,7 +24,12 @@ const __dirname = dirname(__filename);
 const app = express();
 app.disable("x-powered-by");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
