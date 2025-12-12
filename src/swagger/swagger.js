@@ -44,6 +44,10 @@ const options = {
             username: { type: "string" },
             password: { type: "string" },
           },
+          example: {
+            username: "CoppyCat",
+            password: "123456",
+          },
         },
         User: {
           type: "object",
@@ -52,7 +56,6 @@ const options = {
             username: { type: "string" },
             email: { type: "string", format: "email" },
             rol: { type: "string" },
-            // password is write-only and not returned in user objects
           },
         },
         UserCreate: {
@@ -137,6 +140,94 @@ const options = {
                 },
               },
             },
+          },
+        },
+        OrderItem: {
+          type: "object",
+          properties: {
+            id: { type: "integer" },
+            orderId: { type: "integer" },
+            product: { $ref: "#/components/schemas/Product" },
+            productId: { type: "integer" },
+            quantity: { type: "integer" },
+            unitPrice: { type: "integer" },
+          },
+        },
+        OrderCreateRequest: {
+          type: "object",
+          required: ["products"],
+          properties: {
+            products: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  productId: { type: "integer" },
+                  quantity: { type: "integer" },
+                },
+              },
+            },
+            paymentMethod: { type: "string" },
+            paymentData: { type: "object" },
+          },
+          example: {
+            products: [{ productId: 1, quantity: 2 }],
+            paymentMethod: "credit_card",
+            paymentData: {
+              "card-number": "4111111111111111",
+              cvv: 123,
+              "expiration-month": "01",
+              "expiration-year": "2024",
+              "full-name": "APPROVED",
+              currency: "USD",
+              description: "cool stuff",
+              reference: "si",
+            },
+          },
+        },
+        Order: {
+          type: "object",
+          properties: {
+            id: { type: "integer" },
+            userId: { type: "integer" },
+            state: { type: "string" },
+            totalAmount: { type: "integer" },
+            orderItems: {
+              type: "array",
+              items: { $ref: "#/components/schemas/OrderItem" },
+            },
+          },
+        },
+        OrderList: {
+          type: "object",
+          properties: {
+            items: {
+              type: "array",
+              items: { $ref: "#/components/schemas/Order" },
+            },
+            meta: {
+              type: "object",
+              properties: {
+                total: { type: "integer" },
+                limit: { type: "integer" },
+                page: { type: "integer" },
+                pages: { type: "integer" },
+              },
+            },
+          },
+        },
+        JSendOrderList: {
+          type: "object",
+          properties: {
+            status: { type: "string", example: "success" },
+            data: { $ref: "#/components/schemas/OrderList" },
+          },
+        },
+        JSendOrder: {
+          type: "object",
+          properties: {
+            status: { type: "string", example: "success" },
+            data: { $ref: "#/components/schemas/Order" },
           },
         },
       },

@@ -186,9 +186,15 @@ Content-Type: application/json
     "cvv": "123",
     "expiration-month": "01",
     "expiration-year": "2024",
-    "full-name": "APROVED",
+    "full-name": "APPROVED",
     "currency": "USD",
     "description": "cool stuff",
     "reference": "si"
   }
 }
+
+###
+GET http://localhost:3000/orders
+
+###
+GET http://localhost:3000/orders/161
