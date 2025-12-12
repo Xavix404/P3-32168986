@@ -21,7 +21,9 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          # Prisma requires Node >= 20.19, 22.12, or 24.0.
+          # Use an explicit supported 20.x LTS that meets the requirement.
+          node-version: 20.19.x
 
       - name: Instalar dependencias
         run: npm ci
