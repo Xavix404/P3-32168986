@@ -15,6 +15,7 @@ import categoryRouter from "./routes/categories.routes.js";
 import tagsRouter from "./routes/tags.routes.js";
 import rarityRouter from "./routes/rarity.routes.js";
 import productRouter from "./routes/product.routes.js";
+import orderRouter from "./routes/order.routes.js";
 
 import "dotenv/config";
 
@@ -51,6 +52,7 @@ app.use("/categories", categoryRouter);
 app.use("/tags", tagsRouter);
 app.use("/rarity", rarityRouter);
 app.use("/products", productRouter);
+app.use("/orders", orderRouter);
 
 import errorHandler from "./middleware/errorHandler.js";
 app.use(errorHandler);

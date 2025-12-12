@@ -1,10 +1,9 @@
 import request from "supertest";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../prisma/prisma.js";
 
 // Ensure the app picks up .env via dotenv/config; JWT secret should be set there.
 import app from "../src/app.js";
 
-const prisma = new PrismaClient();
 const agent = request.agent(app);
 
 describe("Auth integration tests", () => {

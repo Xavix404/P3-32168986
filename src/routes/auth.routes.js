@@ -52,21 +52,27 @@ router.post("/register", registerUserRules, register);
  *       '200':
  *         description: Login successful (sets access_token cookie)
  *         headers:
- *          Set-Cookie:
- *            description: JWT access token cookie
- *            schema:
- *              type: string
- *              example: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly;
+ *           Set-Cookie:
+ *             description: JWT access token cookie
+ *             schema:
+ *               type: string
+ *               example: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly;
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: "JWT token to be used with Authorization: Bearer <token>"
  *                 username:
  *                   type: string
+ *             example:
+ *               token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6MSfQ..."
+ *               username: demo
  *       '400':
- *          description: Invalid credentials
- *          content:
+ *         description: Invalid credentials
+ *         content:
  *           application/json:
  *             schema:
  *               type: object

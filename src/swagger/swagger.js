@@ -18,12 +18,12 @@ const options = {
     // the user's browser.
     servers: [
       {
-        url: "https://p3-32168986.onrender.com",
-        description: "API server",
-      },
-      {
         url: "http://localhost:3000",
         description: "Local server",
+      },
+      {
+        url: "https://p3-32168986.onrender.com",
+        description: "API server",
       },
     ],
     components: {
@@ -153,9 +153,6 @@ const options = {
         },
       },
     },
-    // Default: endpoints are protected unless they explicitly opt-out
-    // Use bearerAuth as the default in documentation so Swagger UI's
-    // Authorize dialog expects an Authorization: Bearer <token> value.
     security: [{ bearerAuth: [] }],
   },
   apis: [`${process.cwd()}/src/routes/*.js`],

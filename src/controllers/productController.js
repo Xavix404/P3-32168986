@@ -90,7 +90,10 @@ export async function createProduct(req, res) {
 
 export async function updateProduct(req, res) {
   try {
-    const productChanged = await productRepo.updateProduct(req, res);
+    const data = req.body;
+    data.id = parseInt(req.params.id);
+
+    const productChanged = await productRepo.updateProduct(data);
     res.status(200).json(productChanged);
   } catch (error) {
     res.status(500).json({ error: "Error updating product" });
