@@ -2,18 +2,7 @@ import prisma from "../../prisma/prisma.js";
 
 export default class ProductRepository {
   constructor() {
-    // Defensive: ensure Prisma client and model exist. On some deploys the
-    // generated client may be missing if `prisma generate` wasn't run.
-    if (!prisma || !prisma.product) {
-      // Keep a clear error for runtime logs to help debugging deploy issues
-      // (missing generated client or wrong Prisma schema on the host).
-      console.error(
-        "Prisma client or `product` model is not available. Did you run `prisma generate` on the deploy host?"
-      );
-      this.model = undefined;
-    } else {
-      this.model = prisma.product;
-    }
+    this.model = prisma.product;
   }
 
   async findProducts(options = {}) {
@@ -174,23 +163,20 @@ export default class ProductRepository {
     });
   }
 
-  async updateProduct(req, res) {
-    const { tagIds, ...productData } = req.body;
-
-    const data = { ...productData };
+  async updateProduct(data) {
+    const { tagIds, ...productData } = data;
 
     if (Array.isArray(tagIds) && tagIds.length > 0) {
-      data.productsTag = {
+      productData.productsTag = {
         deleteMany: {},
         create: tagIds.map((tagId) => ({
           tag: { connect: { id: parseInt(tagId) } },
         })),
       };
     }
-
     return await this.model.update({
-      where: { id: parseInt(req.params.id) },
-      data,
+      where: { id: parseInt(data.id) },
+      data: productData,
       include: {
         productsTag: { include: { tag: true } },
         category: true,
@@ -205,5 +191,30 @@ export default class ProductRepository {
         id: parseInt(req.params.id),
       },
     });
+  }
+
+  async checkProducts(data) {
+    const items = data;
+    const ids = items.map((item) => item.productId);
+    const found = await this.model.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    // If any product is missing, return false
+    if (found.length !== ids.length) return false;
+
+    const byId = new Map(found.map((p) => [p.id, p]));
+    const result = [];
+    for (const it of items) {
+      const product = byId.get(it.productId);
+      if (!product) return false;
+      if (product.disponibility < it.quantity) return false;
+      result.push({ ...product, quantity: it.quantity });
+    }
+    return result;
   }
 }

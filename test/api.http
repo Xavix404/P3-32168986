@@ -8,9 +8,9 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "coppycat@example.com",
-  "username": "CoppyCat",
-  "password": "123456",
+  "email": "string@example.com",
+  "username": "string",
+  "password": "string",
   "rol": "admin"
 }
 
@@ -135,9 +135,9 @@ POST  http://localhost:3000/products
 Content-Type: application/json
 
 {
-  "name": "Dark-Sword",
-  "description": "Powerfull sword born of dark magic",
-  "categoryId": 2,
+  "name": "Pikachu",
+  "description": ":o",
+  "categoryId": 6,
   "tagIds": [
     2,
     5,
@@ -147,11 +147,11 @@ Content-Type: application/json
     24,
     28
   ],
-  "rarityId": 4,
-  "effects": "dark magic",
-  "element": "dark",
+  "rarityId": 8,
+  "effects": "achu",
+  "element": "thunder",
   "price": 1000,
-  "disponibility": 1
+  "disponibility": 999
 }
 
 ###
@@ -159,10 +159,42 @@ PUT http://localhost:3000/products/1
 Content-Type: application/json
 
 {
-  "tagIds": [
-    3
-  ]
+  "disponibility": 12
 }
 
 ###
 DELETE http://localhost:3000/products/1
+
+###
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+  "products": [
+    {
+      "productId": 2,
+      "quantity": 10
+    },
+    {
+      "productId": 4,
+      "quantity": 5
+    }
+  ],
+  "paymentData": {
+    "paymentMethod": "credit-card",
+    "card-number": "4111111111111111",
+    "cvv": "123",
+    "expiration-month": "01",
+    "expiration-year": "2024",
+    "full-name": "APPROVED",
+    "currency": "USD",
+    "description": "cool stuff",
+    "reference": "si"
+  }
+}
+
+###
+GET http://localhost:3000/orders
+
+###
+GET http://localhost:3000/orders/161
