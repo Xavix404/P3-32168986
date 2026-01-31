@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./components/auth/login.jsx";
-import Register from "./components/auth/register.jsx";
+import Login from "./components/auth/Login.jsx";
+import Register from "./components/auth/Register.jsx";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
