@@ -15,6 +15,7 @@ export default class OrdersRepository {
       data: {
         userId: data.userId,
         totalAmount: total,
+        state: data.state || "pending",
         orderItems: {
           createMany: {
             data: data.items.map((item) => ({
@@ -24,7 +25,6 @@ export default class OrdersRepository {
             })),
           },
         },
-        state: "pending",
       },
       include: {
         orderItems: { include: { product: true } },

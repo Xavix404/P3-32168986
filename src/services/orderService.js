@@ -27,10 +27,16 @@ export default class OrderService {
 
     data.items = products;
 
-    let order = await this.ordersRepo.createOrder(data);
+    // compute total amount from checked products
+    const totalAmount = data.items.reduce(
+      (s, it) => s + (it.price || 0) * (it.quantity || 0),
+      0,
+    );
 
+    // if payment is provided, attempt payment before persisting the order
+    let paymentSucceeded = false;
     if (data.paymentData) {
-      data.paymentData.amount = order.totalAmount;
+      data.paymentData.amount = totalAmount;
 
       const methodRaw = (data.paymentMethod || "credit_card").toString();
       const key = methodRaw
@@ -42,26 +48,30 @@ export default class OrderService {
 
       const payment = await strategy.processPayment(data.paymentData);
       if (payment.success) {
-        order = await this.ordersRepo.updateOrder({
-          id: order.id,
-          body: { state: "paid" },
-        });
-
-        await Promise.all(
-          data.items.map((item) =>
-            this.productRepo.updateProduct({
-              id: item.id,
-              disponibility: item.disponibility - item.quantity,
-            })
-          )
-        );
-      }
-      if (!payment.success) {
+        paymentSucceeded = true;
+      } else {
         const err = new Error(`PAYMENT_FAILED: ${payment.error}`);
         err.code = "PAYMENT_FAILED";
         throw err;
       }
     }
+
+    // create order with state based on payment result
+    if (paymentSucceeded) data.state = "paid";
+    const order = await this.ordersRepo.createOrder(data);
+
+    // if payment succeeded, decrement stock
+    if (paymentSucceeded) {
+      await Promise.all(
+        data.items.map((item) =>
+          this.productRepo.updateProduct({
+            id: item.id,
+            disponibility: item.disponibility - item.quantity,
+          }),
+        ),
+      );
+    }
+
     return order;
   }
 }

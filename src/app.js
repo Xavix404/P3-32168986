@@ -25,12 +25,18 @@ const __dirname = dirname(__filename);
 const app = express();
 app.disable("x-powered-by");
 
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  })
-);
+// Configure CORS dynamically according to environment.
+// In development we allow the dev server (origin: true). In production we
+// restrict to the CLIENT_ORIGIN env var if provided.
+const isProd = process.env.NODE_ENV === "production";
+const corsOptions = isProd
+  ? {
+      origin: process.env.CLIENT_ORIGIN || false,
+      credentials: true,
+    }
+  : { origin: true, credentials: true };
+
+app.use(cors(corsOptions));
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
@@ -42,19 +48,29 @@ app.use(
   swaggerUI.serve,
   swaggerUI.setup(specs, null, {
     swaggerOptions: { requestCredentials: "include" },
-  })
+  }),
 );
-app.use("/about", indexRouter);
-app.use("/ping", pingRouter);
-app.use("/users", userRouter);
-app.use("/auth", authRouter);
-app.use("/categories", categoryRouter);
-app.use("/tags", tagsRouter);
-app.use("/rarity", rarityRouter);
-app.use("/products", productRouter);
-app.use("/orders", orderRouter);
+app.use("/api/about", indexRouter);
+app.use("/api/ping", pingRouter);
+app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/categories", categoryRouter);
+app.use("/api/tags", tagsRouter);
+app.use("/api/rarity", rarityRouter);
+app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
 
 import errorHandler from "./middleware/errorHandler.js";
 app.use(errorHandler);
+
+// Serve frontend static files in production (Vite default output: /frontend/dist)
+import { existsSync } from "fs";
+const clientDist = join(__dirname, "../frontend/dist");
+if (existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get("*", (req, res) => {
+    res.sendFile(join(clientDist, "index.html"));
+  });
+}
 
 export default app;
