@@ -21,7 +21,7 @@ describe("Auth integration tests", () => {
   });
 
   test("register should create a new user (200)", async () => {
-    const res = await request(app).post("/auth/register").send(testUser);
+    const res = await request(app).post("/api/auth/register").send(testUser);
     expect(res.statusCode).toBe(200);
     // verify created in DB
     const dbUser = await prisma.user.findFirst({
@@ -32,26 +32,26 @@ describe("Auth integration tests", () => {
   });
 
   test("registering same email twice should return 422", async () => {
-    const res = await request(app).post("/auth/register").send(testUser);
+    const res = await request(app).post("/api/auth/register").send(testUser);
     expect(res.statusCode).toBe(422);
   });
 
   test("login with correct credentials should return 200 and set cookie", async () => {
     const res = await agent
-      .post("/auth/login")
+      .post("/api/auth/login")
       .send({ username: "CoppyCat", password: "123456" });
     expect(res.statusCode).toBe(200);
     expect(res.headers["set-cookie"]).toBeDefined();
   });
 
   test("access protected /user with cookie should return 200", async () => {
-    const res = await agent.get("/users").send();
+    const res = await agent.get("/api/users").send();
     expect(res.statusCode).toBe(200);
   });
 
   test("login with wrong password should return 400", async () => {
     const res = await request(app)
-      .post("/auth/login")
+      .post("/api/auth/login")
       .send({ username: testUser.username, password: "wrongpass" });
     expect(res.statusCode).toBe(400);
   });

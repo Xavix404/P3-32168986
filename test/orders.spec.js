@@ -32,7 +32,7 @@ describe("Orders integration tests", () => {
     // login and create agent with cookie
     userAgent = request.agent(app);
     await userAgent
-      .post("/auth/login")
+      .post("/api/auth/login")
       .send({ username: "CoppyCat", password: "123456" });
   });
 
@@ -65,7 +65,7 @@ describe("Orders integration tests", () => {
       .mockResolvedValue({ success: true, transactionId: "tx123" });
 
     // create order
-    const res = await userAgent.post("/orders").send({
+    const res = await userAgent.post("/api/orders").send({
       products: [{ productId: testProduct.id, quantity: 2 }],
       paymentData: {
         "card-number": "4111111111111111",
@@ -96,17 +96,17 @@ describe("Orders integration tests", () => {
 
   test("POST /orders should return 401 when unauthenticated", async () => {
     const res = await request(app)
-      .post("/orders")
+      .post("/api/orders")
       .send({ products: [{ productId: testProduct.id, quantity: 1 }] });
     expect(res.statusCode).toBe(401);
   });
 
   test("GET /orders should return user's order history and support pagination", async () => {
     // create two orders for the logged in user
-    const res1 = await userAgent.post("/orders").send({
+    const res1 = await userAgent.post("/api/orders").send({
       products: [{ productId: testProduct.id, quantity: 1 }],
     });
-    const res2 = await userAgent.post("/orders").send({
+    const res2 = await userAgent.post("/api/orders").send({
       products: [{ productId: testProduct.id, quantity: 1 }],
     });
 
@@ -114,14 +114,14 @@ describe("Orders integration tests", () => {
     expect(res2.statusCode).toBe(200);
 
     // fetch orders without pagination
-    const list = await userAgent.get("/orders").send();
+    const list = await userAgent.get("/api/orders").send();
     expect(list.statusCode).toBe(200);
     expect(list.body.status).toBe("success");
     expect(list.body.data).toHaveProperty("items");
     expect(Array.isArray(list.body.data.items)).toBe(true);
 
     // pagination
-    const page1 = await userAgent.get("/orders?page=1&limit=1").send();
+    const page1 = await userAgent.get("/api/orders?page=1&limit=1").send();
     expect(page1.statusCode).toBe(200);
     expect(page1.body.data.items.length).toBeLessThanOrEqual(1);
   });
@@ -129,13 +129,13 @@ describe("Orders integration tests", () => {
   test("GET /orders accepts Bearer token instead of cookie", async () => {
     // login to get token
     const login = await request(app)
-      .post("/auth/login")
+      .post("/api/auth/login")
       .send({ username: "CoppyCat", password: "123456" });
     expect(login.statusCode).toBe(200);
     const token = login.body.token;
 
     const res = await request(app)
-      .get("/orders")
+      .get("/api/orders")
       .set("Authorization", `Bearer ${token}`)
       .send();
     expect(res.statusCode).toBe(200);
@@ -145,19 +145,19 @@ describe("Orders integration tests", () => {
   test("GET /orders/:id accepts Bearer token for owner and rejects other users", async () => {
     // create an order using bearer token
     const login = await request(app)
-      .post("/auth/login")
+      .post("/api/auth/login")
       .send({ username: "CoppyCat", password: "123456" });
     const token = login.body.token;
 
     const created = await request(app)
-      .post("/orders")
+      .post("/api/orders")
       .set("Authorization", `Bearer ${token}`)
       .send({ products: [{ productId: testProduct.id, quantity: 1 }] });
     expect(created.statusCode).toBe(200);
     const orderId = created.body.data.id;
 
     const detail = await request(app)
-      .get(`/orders/${orderId}`)
+      .get(`/api/orders/${orderId}`)
       .set("Authorization", `Bearer ${token}`)
       .send();
     expect(detail.statusCode).toBe(200);
@@ -169,13 +169,13 @@ describe("Orders integration tests", () => {
       username: `other${unique2}`,
       password: "123456",
     };
-    await request(app).post("/auth/register").send(newUser);
+    await request(app).post("/api/auth/register").send(newUser);
     const login2 = await request(app)
-      .post("/auth/login")
+      .post("/api/auth/login")
       .send({ username: newUser.username, password: newUser.password });
     const bearer2 = login2.body.token;
     const forbidden = await request(app)
-      .get(`/orders/${orderId}`)
+      .get(`/api/orders/${orderId}`)
       .set("Authorization", `Bearer ${bearer2}`)
       .send();
     expect(forbidden.statusCode).toBe(403);
@@ -183,14 +183,14 @@ describe("Orders integration tests", () => {
 
   test("GET /orders/:id returns detail only for owner", async () => {
     // create an order to fetch
-    const created = await userAgent.post("/orders").send({
+    const created = await userAgent.post("/api/orders").send({
       products: [{ productId: testProduct.id, quantity: 1 }],
     });
     expect(created.statusCode).toBe(200);
     const orderId = created.body.data.id;
 
     // fetch detail as owner
-    const detail = await userAgent.get(`/orders/${orderId}`).send();
+    const detail = await userAgent.get(`/api/orders/${orderId}`).send();
     expect(detail.statusCode).toBe(200);
     expect(detail.body.status).toBe("success");
     expect(detail.body.data.id).toBe(orderId);
@@ -203,15 +203,15 @@ describe("Orders integration tests", () => {
       username: `other${unique2}`,
       password: "123456",
     };
-    await request(app).post("/auth/register").send(newUser);
+    await request(app).post("/api/auth/register").send(newUser);
     const otherAgent = request.agent(app);
     const loginRes = await otherAgent
-      .post("/auth/login")
+      .post("/api/auth/login")
       .send({ username: newUser.username, password: newUser.password });
     expect(loginRes.statusCode).toBe(200);
     expect(loginRes.headers["set-cookie"]).toBeDefined();
 
-    const forbidden = await otherAgent.get(`/orders/${orderId}`).send();
+    const forbidden = await otherAgent.get(`/api/orders/${orderId}`).send();
     expect(forbidden.statusCode).toBe(403);
   });
 
@@ -247,7 +247,7 @@ describe("Orders integration tests", () => {
     });
 
     // attempt to order more than available for p2
-    const res = await userAgent.post("/orders").send({
+    const res = await userAgent.post("/api/orders").send({
       products: [
         { productId: p1.id, quantity: 1 },
         { productId: p2.id, quantity: 10 },
@@ -295,7 +295,7 @@ describe("Orders integration tests", () => {
       .mockResolvedValue({ success: false, error: "declined" });
     const deleteSpy = jest.spyOn(OrdersRepository.prototype, "deleteOrder");
 
-    const res = await userAgent.post("/orders").send({
+    const res = await userAgent.post("/api/orders").send({
       products: [{ productId: p.id, quantity: 2 }],
       paymentData: {
         "card-number": "4111111111111111",

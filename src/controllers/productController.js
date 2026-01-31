@@ -65,7 +65,8 @@ export async function getProductBySlug(req, res) {
       const normalize = (s) => (s || "").toString().trim().toLowerCase();
       const reqSlug = normalize(decodeURIComponent(urlSlug));
       const dbSlug = normalize(productFound.slug);
-      const canonical = `/products/${productFound.id}-${productFound.slug}`;
+      // build canonical path including any mount path (e.g. /api/products)
+      const canonical = `${req.baseUrl}/${productFound.id}-${productFound.slug}`;
 
       if (reqSlug !== dbSlug && canonical !== req.originalUrl) {
         return res.redirect(301, canonical);

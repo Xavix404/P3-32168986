@@ -4,12 +4,12 @@ import app from "../src/app.js";
 
 describe("peticiones de products con validaciones de token invalido", () => {
   test("get a products by id", async () => {
-    const res = await request(app).get("/products/1");
+    const res = await request(app).get("/api/products/1");
     expect(res.statusCode).toBe(401);
   });
   test("post a products", async () => {
     const res = await request(app)
-      .post("/products")
+      .post("/api/products")
       .send({
         name: "Dark-Sword",
         description: "Powerfull sword born of dark magic",
@@ -24,57 +24,61 @@ describe("peticiones de products con validaciones de token invalido", () => {
     expect(res.statusCode).toBe(401);
   });
   test("put a products", async () => {
-    const res = await request(app).put("/products/1").send({ name: "green" });
+    const res = await request(app)
+      .put("/api/products/1")
+      .send({ name: "green" });
     expect(res.statusCode).toBe(401);
   });
   test("delete a products", async () => {
-    const res = await request(app).delete("/products/1");
+    const res = await request(app).delete("/api/products/1");
     expect(res.statusCode).toBe(401);
   });
 });
 
 describe("peticiones de products publicas general y por slug", () => {
   test("get products", async () => {
-    const res = await request(app).get("/products");
+    const res = await request(app).get("/api/products");
     expect(res.statusCode).toBe(200);
   });
   test("get products by slug", async () => {
-    const res = await request(app).get("/products/1-dark-sword");
+    const res = await request(app).get("/api/products/1-dark-sword");
     expect(res.statusCode).toBe(200);
   });
   test("get products by slug", async () => {
-    const res = await request(app).get("/products/1-dark");
+    const res = await request(app).get("/api/products/1-dark");
     expect(res.statusCode).toBe(301);
   });
 });
 
 describe("pruebas de filtros :D", () => {
   test("get products by category", async () => {
-    const res = await request(app).get("/products?category=1");
+    const res = await request(app).get("/api/products?category=1");
     expect(res.statusCode).toBe(200);
   });
   test("get products by tags", async () => {
-    const res = await request(app).get("/products?tags=34, 35");
+    const res = await request(app).get("/api/products?tags=34, 35");
     expect(res.statusCode).toBe(200);
   });
   test("get products by search", async () => {
-    const res = await request(app).get("/products?search=sword");
+    const res = await request(app).get("/api/products?search=sword");
     expect(res.statusCode).toBe(200);
   });
   test("get products by rarity", async () => {
-    const res = await request(app).get("/products?rarity=rare");
+    const res = await request(app).get("/api/products?rarity=rare");
     expect(res.statusCode).toBe(200);
   });
   test("get products by effects", async () => {
-    const res = await request(app).get("/products?effects=toDo");
+    const res = await request(app).get("/api/products?effects=toDo");
     expect(res.statusCode).toBe(200);
   });
   test("get products by elements", async () => {
-    const res = await request(app).get("/products?element=fire");
+    const res = await request(app).get("/api/products?element=fire");
     expect(res.statusCode).toBe(200);
   });
   test("get products by min,max price", async () => {
-    const res = await request(app).get("/products?min_price=500&max_price=800");
+    const res = await request(app).get(
+      "/api/products?min_price=500&max_price=800",
+    );
     expect(res.statusCode).toBe(200);
   });
 });
